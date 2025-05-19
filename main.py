@@ -1,7 +1,6 @@
-import utils.config as config
-import utils.window as window
+from utils.config import init_config
+from utils.window import WINDOW, init_window
 
-config.init_config()
-window.init_window()
-window.WINDOW.mainloop()
-
+init_config()
+init_window()
+WINDOW.mainloop()
