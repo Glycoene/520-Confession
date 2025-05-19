@@ -12,31 +12,32 @@ ACCEPT_BUTTON = tk.Button(WINDOW, font=('黑体', ACCEPT_FONT))
 
 
 def deny():
-    window_width = WINDOW.winfo_width()
-    window_height = WINDOW.winfo_height()
-
-    deny_button_width = DENY_BUTTON.winfo_width()
-    deny_button_height = DENY_BUTTON.winfo_height()
-
-    accept_button_width = ACCEPT_BUTTON.winfo_width()
-    accept_button_height = ACCEPT_BUTTON.winfo_height()
-
-    random_x = random.randint(0, (window_width - deny_button_width))
-    random_y = random.randint(0, (window_height - deny_button_height))
+    random_x = random.random()
+    random_y = random.random()
 
     global DENY_FONT
-    DENY_FONT -= 1
+    DENY_FONT -= 3
     DENY_BUTTON.config(font=('黑体', DENY_FONT))
-    DENY_BUTTON.place(x=random_x, y=random_y, width=deny_button_width - 5, height=deny_button_height - 5)
+    DENY_BUTTON.place(relx=random_x, rely=random_y)
 
     global ACCEPT_FONT
-    ACCEPT_FONT += 1
+    ACCEPT_FONT += 3
     ACCEPT_BUTTON.config(font=('黑体', ACCEPT_FONT))
-    ACCEPT_BUTTON.place(width=accept_button_width + 5, height=accept_button_height + 5)
 
 def accept():
     messagebox.showinfo(message=f'{CONFIG.get('Text', 'answer')}')
     WINDOW.destroy()
+
+def close():
+    messagebox.showerror(message=f'{CONFIG.get('Text', 'closeError')}')
+
+def check_minimize():
+    if WINDOW.state() == 'iconic':
+        WINDOW.deiconify()
+        WINDOW.lift()
+        WINDOW.focus_force()
+        messagebox.showwarning(message=f'{CONFIG.get('Text', 'minimizeWaring')}')
+    WINDOW.after(500, check_minimize)
 
 def init_window():
     WINDOW.iconbitmap(Path(__file__).parent.parent / 'icon.ico')
@@ -60,3 +61,6 @@ def init_window():
     DENY_BUTTON.place(relx=0.3, rely=0.5, anchor=tk.CENTER)
     ACCEPT_BUTTON.config(command=accept, text=CONFIG.get('Text', 'acceptButton'))
     ACCEPT_BUTTON.place(relx=0.7, rely=0.5, anchor=tk.CENTER)
+
+    WINDOW.protocol('WM_DELETE_WINDOW', close)
+    check_minimize()
