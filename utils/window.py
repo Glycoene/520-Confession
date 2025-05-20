@@ -16,12 +16,14 @@ def deny():
     random_y = random.random()
 
     global DENY_FONT
-    DENY_FONT -= 3
+    if DENY_FONT >= 0:
+        DENY_FONT -= 5
     DENY_BUTTON.config(font=('黑体', DENY_FONT))
     DENY_BUTTON.place(relx=random_x, rely=random_y)
 
     global ACCEPT_FONT
-    ACCEPT_FONT += 3
+    if ACCEPT_FONT <= 50:
+        ACCEPT_FONT += 5
     ACCEPT_BUTTON.config(font=('黑体', ACCEPT_FONT))
 
 def accept():
